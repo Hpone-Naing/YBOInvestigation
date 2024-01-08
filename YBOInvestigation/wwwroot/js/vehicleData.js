@@ -6,7 +6,7 @@
     var selectedYBSCompany = lstYBSCompanyCtrl.options[lstYBSCompanyCtrl.selectedIndex].value;
 
     if (selectedYBSCompany != null && selectedYBSCompany != '') {
-        $.getJSON("/TransportationManagement/VehicleData/GetYBSTypeByYBSCompanyId", { ybsCompanyId: selectedYBSCompany }, function (ybsTypes) {
+        $.getJSON("/YBOInvestigationManagement/VehicleData/GetYBSTypeByYBSCompanyId", { ybsCompanyId: selectedYBSCompany }, function (ybsTypes) {
             if (ybsTypes != null && !jQuery.isEmptyObject(ybsTypes)) {
                 $.each(ybsTypes, function (index, ybsType) {
                     lstYBSTypes.append($('<option/>',

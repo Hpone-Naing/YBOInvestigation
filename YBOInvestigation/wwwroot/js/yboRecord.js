@@ -6,7 +6,7 @@
     var selectedYBSCompany = lstYBSCompanyCtrl.options[lstYBSCompanyCtrl.selectedIndex].value;
 
     if (selectedYBSCompany != null && selectedYBSCompany != '') {
-        $.getJSON("/YBORecord/GetYBSTypeByYBSCompanyId", { ybsCompanyId: selectedYBSCompany }, function (ybsTypes) {
+        $.getJSON("/YBOInvestigationManagement/YBORecord/GetYBSTypeByYBSCompanyId", { ybsCompanyId: selectedYBSCompany }, function (ybsTypes) {
             if (ybsTypes != null && !jQuery.isEmptyObject(ybsTypes)) {
                 $.each(ybsTypes, function (index, ybsType) {
                     lstYBSTypes.append($('<option/>',
@@ -29,7 +29,7 @@ function FillDriverLicenseByDriverName(lstDriverName, driverLicenseId) {
     var selectedDriverName = lstDriverName.options[lstDriverName.selectedIndex].value;
 
     if (selectedDriverName != null && selectedDriverName != '') {
-        $.getJSON("/YBORecord/GetDriverLicenseByDriverName", { driverName: selectedDriverName }, function (driverLicense) {
+        $.getJSON("/YBOInvestigationManagement/YBORecord/GetDriverLicenseByDriverName", { driverName: selectedDriverName }, function (driverLicense) {
             driverLicenseTestBox.val(driverLicense);
         });
     }
