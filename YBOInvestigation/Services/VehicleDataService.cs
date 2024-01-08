@@ -12,6 +12,8 @@ namespace YBOInvestigation.Services
         bool DeleteVehicle(VehicleData vehicleData);
         VehicleData FindVehicleDataById(int id);
         VehicleData FindVehicleDataByIdEgerLoad(int id);
+        VehicleData FindVehicleDataByIdYBSTableEgerLoad(int id);
+
         bool EditVehicle(VehicleData vehicleData);
         VehicleData FindVehicleByVehicleNumber(string vehicleNumer);
     }

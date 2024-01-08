@@ -20,10 +20,16 @@ namespace YBOInvestigation.Services.Impl
             return GetUniqueList(ybscompany => ybscompany.YBSCompanyPkid);
         }
 
+        public YBSCompany FindYBSCompanyById(int pkId)
+        {
+            return FindById(pkId);
+        }
+
         public List<SelectListItem> GetSelectListYBSCompanys()
         {
             var lstYBSCompanys = new List<SelectListItem>();
             List<YBSCompany> YBSCompanys = GetUniqueYBSCompanys();
+            
             lstYBSCompanys = YBSCompanys.Select(ybsCompany => new SelectListItem()
             {
                 Value = ybsCompany.YBSCompanyPkid.ToString(),

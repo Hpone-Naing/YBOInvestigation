@@ -46,7 +46,10 @@ namespace YBOInvestigation.Services.Impl
             return lstYBSTypes;
         }
 
-        
+        public YBSType FindYBSTypeById(int pkId)
+        {
+            return FindById(pkId);
+        }
 
         public bool CreateYBSType(YBSType ybsType)
         {

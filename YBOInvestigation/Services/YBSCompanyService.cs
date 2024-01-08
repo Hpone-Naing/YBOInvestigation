@@ -7,6 +7,7 @@ namespace YBOInvestigation.Services
     {
         List<YBSCompany> GetUniqueYBSCompanys();
         List<SelectListItem> GetSelectListYBSCompanys();
+        YBSCompany FindYBSCompanyById(int pkId);
 
     }
 }

@@ -81,6 +81,14 @@ namespace YBOInvestigation.Services.Impl
                            .FirstOrDefault(vehicle => vehicle.VehicleDataPkid == id);
         }
 
+        public VehicleData FindVehicleDataByIdYBSTableEgerLoad(int id)
+        {
+            return _context.VehicleDatas.Where(VehicleData => !VehicleData.IsDeleted)
+                           .Include(vehicle => vehicle.YBSCompany)
+                           .Include(vehicle => vehicle.YBSType)
+                           .FirstOrDefault(vehicle => vehicle.VehicleDataPkid == id);
+        }
+
         public VehicleData FindVehicleByVehicleNumber(string vehicleNumer)
         {
             return FindByString("VehicleNumber", vehicleNumer);

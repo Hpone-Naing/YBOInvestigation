@@ -108,10 +108,10 @@ namespace YBOInvestigation.Controllers.YBORecord
         
         private void AddViewBag(int vehicleId = 0)
         {           
-            VehicleData vehicleData = _serviceFactory.CreateVehicleDataService().FindVehicleDataById(vehicleId);
+            VehicleData vehicleData = _serviceFactory.CreateVehicleDataService().FindVehicleDataByIdYBSTableEgerLoad(vehicleId);
             List<Driver> drivers = _serviceFactory.CreateDriverService().GetDriversByVehicleDataId(vehicleData.VehicleDataPkid).Where(driver => driver.VehicleData.VehicleNumber == vehicleData.VehicleNumber).ToList();
-            ViewBag.YBSCompanies = _serviceFactory.CreateYBSCompanyService().GetSelectListYBSCompanys();
-            ViewBag.YBSTypes = _serviceFactory.CreateYBSTypeService().GetSelectListYBSTypesByYBSCompanyId(vehicleData.YBSCompany.YBSCompanyPkid);
+            ViewBag.YBSCompany = _serviceFactory.CreateYBSCompanyService().FindYBSCompanyById(vehicleData.YBSCompany.YBSCompanyPkid);//.GetSelectListYBSCompanys();
+            ViewBag.YBSType = _serviceFactory.CreateYBSTypeService().FindYBSTypeById(vehicleData.YBSType.YBSTypePkid);//.GetSelectListYBSTypesByYBSCompanyId(vehicleData.YBSCompany.YBSCompanyPkid);
             ViewBag.VehicleNumber = vehicleData.VehicleNumber;
             ViewBag.AutoComplete = drivers
                 .Select(driver => new { DriverName = driver.DriverName, DriverLicense = driver.DriverLicense })
@@ -123,8 +123,7 @@ namespace YBOInvestigation.Controllers.YBORecord
                 return RedirectToAction("Index", "Login");
 
             AddViewBag(vehicleId);
-            
-
+           
             return View();
         }
 
