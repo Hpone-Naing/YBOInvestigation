@@ -6,6 +6,7 @@ namespace YBOInvestigation.Services
     {
         public Driver FindDriverByLicense(string licenseNumber);
         public string FindDriverLicenseByDriverName(string driverName);
+        public Driver FindDriverById(int driverPkId);
         public List<Driver> GetDriversByVehicleDataId(int vehicleDataPkId);
         public bool CreateDriver(Driver driver);
 

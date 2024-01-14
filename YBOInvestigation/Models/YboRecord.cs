@@ -2,7 +2,7 @@
 
 namespace YBOInvestigation.Models
 {
-    [Table("TB_YboRecord")]
+    [Table("TB_InvestigationDept")]
     public class YboRecord
     {
         [Key]
@@ -51,6 +51,10 @@ namespace YBOInvestigation.Models
         [StringLength(50)]
         [DisplayName("လိုင်စင်အမှတ်")]
         public string DriverLicense { get; set; }
+
+        [StringLength(50)]
+        [DisplayName("ID အမှတ်")]
+        public string IDNumber { get; set; }
 
         public bool? IsDeleted { get; set; }
         public DateTime? CreatedDate { get; set; }

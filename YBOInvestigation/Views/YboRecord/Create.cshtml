@@ -46,16 +46,18 @@
                 <label asp-for="DriverName" class="control-label"></label><span id="driverNameLbl" class="text-primary" style="display:none;">အသစ်ထည့်ပါ</span>
                 <div class="row">
                     <div id="lstDriverNameDiv"  class="col-10">
-                        <select list="datas" id="lstDriverName" name="selectedDriverName" class="form-control" onchange="FillDriverLicenseByDriverName(this, 'driverLicense');" required>
+                        <select list="datas" id="lstDriverName" name="selectedDriverName" class="form-control" onchange="FillDriverLicenseByDriverId(this, 'driverLicense');" required>
                             <option value="" selected>ရွေးချယ်ပါ</option>
                             @foreach (var i in ViewBag.AutoComplete)
                             {
-                                <option value="@i.DriverName">@i.DriverName</option>
+                                <option value="@i.DriverPkId">@i.DriverName</option>
                             }
                         </select>
+                        <span asp-validation-for="DriverName" class="text-danger"></span>
+
                     </div>
                     <div id="newDriverDiv" class="col-10" style="display:none;">
-                        <input class="form-control" name="newDriverName" />
+                        <input id="newDriverName" class="form-control" name="newDriverName" />
                     </div>
                     <div id="add" class="col" style="cursor:pointer;">
                         <i class="fas fa-plus-circle"></i>
@@ -85,7 +87,12 @@
                 <label asp-for="TotalRecord" class="control-label"></label>
                 <input asp-for="TotalRecord" class="form-control" required />
                 <span asp-validation-for="TotalRecord" class="text-danger"></span>
-            </div>           
+            </div>  
+            <div class="form-group mt-2">
+                <label asp-for="IDNumber" class="control-label"></label>
+                <input asp-for="IDNumber" class="form-control" required />
+                <span asp-validation-for="IDNumber" class="text-danger"></span>
+            </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="form-group mt-2">
@@ -123,6 +130,7 @@
                 <input id="driverLicense" asp-for="DriverLicense" class="form-control" readonly />
                 <span asp-validation-for="DriverLicense" class="text-danger"></span>
             </div>
+            
         </div>
         <div class="form-group mt-2">
             <label asp-for="RecordDescription" class="control-label"></label>

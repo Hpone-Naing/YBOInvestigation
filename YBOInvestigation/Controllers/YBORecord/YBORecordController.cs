@@ -8,6 +8,8 @@ using YBOInvestigation.Models;
 using YBOInvestigation.Paging;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
 
 namespace YBOInvestigation.Controllers.YBORecord
 {
@@ -19,10 +21,9 @@ namespace YBOInvestigation.Controllers.YBORecord
             _serviceFactory = serviceFactory;
         }
 
-        private void AddSearchDatasToViewBag(string searchString, string searchOption = null)
+        private void AddSearchDatasToViewBag(string searchString)
         {
             ViewBag.SearchString = searchString;
-            ViewBag.SearchOption = searchOption;
         }
 
         private string MakeExcelFileName(string searchString, bool ExportAll, int? pageNo)
@@ -38,29 +39,9 @@ namespace YBOInvestigation.Controllers.YBORecord
                 else
                     return "YBOဖမ်းစီးမှုမှတ်တမ်း PageNumber( " + pageNo + " )" + DateTime.Now + ".xlsx";
             }
-            
+
         }
-
-        public IActionResult SearchVehicle(int? pageNo)
-        {
-            if (!SessionUtil.IsActiveSession(HttpContext))
-                return RedirectToAction("Index", "Login");
-
-            string searchString = Request.Query["SearchString"];
-            string searchOption = Request.Query["SearchOption"];
-            AdvanceSearch advanceSearch = Utility.MakeAdvanceSearch(HttpContext);
-
-            int pageSize = Utility.DEFAULT_PAGINATION_NUMBER;
-            AddSearchDatasToViewBag(searchString, searchOption);
-            List<VehicleData> vehicleDatas = _serviceFactory.CreateVehicleDataService().GetAllVehiclesWithPagin(searchString, advanceSearch, pageNo, pageSize, searchOption);
-            ViewBag.AutoComplete = _serviceFactory.CreateVehicleDataService().GetAllVehicles()
-                .Select(vehicle => new { VehicleNumber = vehicle.VehicleNumber, YBSTypeName = vehicle.YBSType.YBSTypeName })
-                .ToList();
-            if (string.IsNullOrEmpty(searchString))
-                return View();
-            return View(vehicleDatas);
-        }
-            public IActionResult List(int? pageNo)
+        public IActionResult List(int? pageNo)
         {
             try
             {
@@ -105,16 +86,16 @@ namespace YBOInvestigation.Controllers.YBORecord
             }
         }
 
-        
+
         private void AddViewBag(int vehicleId = 0)
-        {           
+        {
             VehicleData vehicleData = _serviceFactory.CreateVehicleDataService().FindVehicleDataByIdYBSTableEgerLoad(vehicleId);
             List<Driver> drivers = _serviceFactory.CreateDriverService().GetDriversByVehicleDataId(vehicleData.VehicleDataPkid).Where(driver => driver.VehicleData.VehicleNumber == vehicleData.VehicleNumber).ToList();
             ViewBag.YBSCompany = _serviceFactory.CreateYBSCompanyService().FindYBSCompanyById(vehicleData.YBSCompany.YBSCompanyPkid);//.GetSelectListYBSCompanys();
             ViewBag.YBSType = _serviceFactory.CreateYBSTypeService().FindYBSTypeById(vehicleData.YBSType.YBSTypePkid);//.GetSelectListYBSTypesByYBSCompanyId(vehicleData.YBSCompany.YBSCompanyPkid);
             ViewBag.VehicleNumber = vehicleData.VehicleNumber;
             ViewBag.AutoComplete = drivers
-                .Select(driver => new { DriverName = driver.DriverName, DriverLicense = driver.DriverLicense })
+                .Select(driver => new {DriverPkId = driver.DriverPkid ,DriverName = driver.DriverName, DriverLicense = driver.DriverLicense })
                 .ToList();
         }
         public IActionResult Create(int vehicleId)
@@ -123,7 +104,7 @@ namespace YBOInvestigation.Controllers.YBORecord
                 return RedirectToAction("Index", "Login");
 
             AddViewBag(vehicleId);
-           
+
             return View();
         }
 
@@ -134,12 +115,9 @@ namespace YBOInvestigation.Controllers.YBORecord
             if (!SessionUtil.IsActiveSession(HttpContext))
                 return RedirectToAction("Index", "Login");
 
-            string selectedDriverName = Request.Form["selectedDriverName"].FirstOrDefault() ?? "";
+            string selectedOldDriverId = Request.Form["selectedDriverName"].FirstOrDefault() ?? "";
             string newDriverName = Request.Form["newDriverName"].FirstOrDefault() ?? "";
-
-            string driverName = !string.IsNullOrEmpty(selectedDriverName) ? selectedDriverName : newDriverName;
-            yboRecord.DriverName = driverName;
-            
+            yboRecord.DriverName = !string.IsNullOrEmpty(selectedOldDriverId) ? selectedOldDriverId : newDriverName;
             if (_serviceFactory.CreateYBORecordService().CreateYboRecord(yboRecord))
             {
                 Utility.AlertMessage(this, "Save Success", "alert-success");
@@ -192,11 +170,9 @@ namespace YBOInvestigation.Controllers.YBORecord
         {
             if (!SessionUtil.IsActiveSession(HttpContext))
                 return RedirectToAction("Index", "Login");
-            string selectedDriverName = Request.Form["selectedDriverName"].FirstOrDefault() ?? "";
+            string selectedOldDriverId = Request.Form["selectedDriverName"].FirstOrDefault() ?? "";
             string newDriverName = Request.Form["newDriverName"].FirstOrDefault() ?? "";
-            string driverName = !string.IsNullOrEmpty(selectedDriverName) ? selectedDriverName : newDriverName;
-            yboRecord.DriverName = driverName;
-
+            yboRecord.DriverName = !string.IsNullOrEmpty(selectedOldDriverId) ? selectedOldDriverId : newDriverName;
             if (_serviceFactory.CreateYBORecordService().EditYboRecord(yboRecord))
             {
 
@@ -207,7 +183,6 @@ namespace YBOInvestigation.Controllers.YBORecord
             {
                 Utility.AlertMessage(this, "Edit Fail.Internal Server Error", "alert-danger");
                 YboRecord record = _serviceFactory.CreateYBORecordService().FindYboRecordByIdEgerLoad(yboRecord.YboRecordPkid);
-                AddViewBag();
                 return View(record);
             }
         }
@@ -239,9 +214,9 @@ namespace YBOInvestigation.Controllers.YBORecord
             return Json(ybsTypes);
         }
 
-        public JsonResult GetDriverLicenseByDriverName(string driverName)
+        public JsonResult GetDriverLicenseByDriverId(int driverPkId)
         {
-            string license = _serviceFactory.CreateDriverService().FindDriverLicenseByDriverName(driverName);
+            string license = _serviceFactory.CreateDriverService().FindDriverById(driverPkId).DriverLicense;
             return Json(license);
         }
     }

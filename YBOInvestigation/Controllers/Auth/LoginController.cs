@@ -39,7 +39,7 @@ namespace YBOInvestigation.Controllers.Auth
                             UserType = loginUser.UserType.UserTypeName
                         };
                         SessionUtil.SetLoginUserInfo(HttpContext, userInfo);
-                        return RedirectToAction("List", "YBORecord");
+                        return RedirectToAction("SearchVehicle", "VehicleData");
                     }
                 }
                 Utility.AlertMessage(this, "Invalid Username or Password.", "alert-danger");

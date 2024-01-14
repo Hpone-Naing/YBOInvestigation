@@ -6,7 +6,7 @@ namespace YBOInvestigation.Services.Impl
 {
     public class YBSCompanyServiceImpl : AbstractServiceImpl<YBSCompany>, YBSCompanyService
     {
-        public YBSCompanyServiceImpl(HumanResourceManagementDBContext context) : base(context)
+        public YBSCompanyServiceImpl(YBOInvestigationDBContext context) : base(context)
         {
         }
 

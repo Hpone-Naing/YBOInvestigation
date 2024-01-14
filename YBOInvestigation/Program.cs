@@ -19,7 +19,7 @@ var configuration = new ConfigurationBuilder()
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<HumanResourceManagementDBContext>(options =>
+builder.Services.AddDbContext<YBOInvestigationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("YBOInvestigationManagementDBContext"), sqlServerOptionsAction: SqlOptions => { SqlOptions.EnableRetryOnFailure(); }));
 //Inject Service classes 
 builder.Services.AddTransient<ServiceFactory, ServiceFactoryImpl>();

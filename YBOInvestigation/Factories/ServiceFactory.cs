@@ -5,7 +5,6 @@ namespace YBOInvestigation.Factories
     public interface ServiceFactory
     {
         UserService CreateUserService();
-        EmployeeService CreateEmployeeService();
         VehicleDataService CreateVehicleDataService();
         FuelTypeService CreateFuelTypeService();
         ManufacturerService CreateManufacturerService();
@@ -13,6 +12,10 @@ namespace YBOInvestigation.Factories
         YBSTypeService CreateYBSTypeService();
 
         YboRecordService CreateYBORecordService();
+        YBOInvestigationDeptService CreateYBOInvestigationDeptService();
+        TrafficControlCenterInvestigationDeptService CreateTrafficControlCenterInvestigationDeptService();
+        SpecialEventInvestigationDeptService CreateSpecialEventInvestigationDeptService();
         DriverService CreateDriverService();
+        PunishmentTypeService CreatePunishmentTypeService();
     }
 }

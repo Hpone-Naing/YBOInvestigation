@@ -8,7 +8,7 @@ namespace YBOInvestigation.Services.Impl
 {
     public class VehicleDataServiceImpl : AbstractServiceImpl<VehicleData>, VehicleDataService
     {
-        public VehicleDataServiceImpl(HumanResourceManagementDBContext context) : base(context)
+        public VehicleDataServiceImpl(YBOInvestigationDBContext context) : base(context)
         {
         }
 

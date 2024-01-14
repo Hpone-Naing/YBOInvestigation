@@ -16,39 +16,33 @@ namespace YBOInvestigation.Controllers.VechicleData
             _serviceFactory = serviceFactory;
         }
 
-        private void AddSearchDatasToViewBag(string searchString, AdvanceSearch advanceSearch)
+        private void AddSearchDatasToViewBag(string searchString, string searchOption = null)
         {
             ViewBag.SearchString = searchString;
-            ViewBag.CctvInstalled = advanceSearch.CctvInstalled;
-            ViewBag.CngQty = advanceSearch.CngQty;
-            ViewBag.TotalBusStop = advanceSearch.TotalBusStop;
-            ViewBag.TotalBusStopOption = advanceSearch.TotalBusStopOption;
+            ViewBag.SearchOption = searchOption;
         }
-        public IActionResult List(int? pageNo)
+
+        public IActionResult SearchVehicle(int? pageNo)
         {
-            try
-            {
-                if (!SessionUtil.IsActiveSession(HttpContext))
-                    return RedirectToAction("Index", "Login");
+            if (!SessionUtil.IsActiveSession(HttpContext))
+                return RedirectToAction("Index", "Login");
 
-                string searchString = Request.Query["SearchString"];
-                AdvanceSearch advanceSearch = Utility.MakeAdvanceSearch(HttpContext);
+            string searchString = Request.Query["SearchString"];
+            string searchOption = Request.Query["SearchOption"];
+            AdvanceSearch advanceSearch = Utility.MakeAdvanceSearch(HttpContext);
 
-                int pageSize = Utility.DEFAULT_PAGINATION_NUMBER;
-                AddSearchDatasToViewBag(searchString, advanceSearch);
-                return View(_serviceFactory.CreateVehicleDataService().GetAllVehiclesWithPagin(searchString, advanceSearch, pageNo, pageSize));
-            } catch(NullReferenceException ne)
-            {
-                Utility.AlertMessage(this, "Data Issue. Please fill VehicleData in database", "alert-danger");
+            int pageSize = Utility.DEFAULT_PAGINATION_NUMBER;
+            AddSearchDatasToViewBag(searchString, searchOption);
+            List<VehicleData> vehicleDatas = _serviceFactory.CreateVehicleDataService().GetAllVehiclesWithPagin(searchString, advanceSearch, pageNo, pageSize, searchOption);
+            ViewBag.AutoComplete = _serviceFactory.CreateVehicleDataService().GetAllVehicles()
+                .Select(vehicle => new { VehicleNumber = vehicle.VehicleNumber, YBSTypeName = vehicle.YBSType.YBSTypeName })
+                .ToList();
+            if (string.IsNullOrEmpty(searchString))
                 return View();
-            }
-            catch(SqlException se)
-            {
-                Utility.AlertMessage(this, "Internal Server Error", "alert-danger");
-                return View();
-            }
+            return View(vehicleDatas);
         }
 
+        
         private List<SelectListItem> GetItemsFromList<T>(List<T> list, string valuePropertyName, string textPropertyName)
         {
             var lstItems = new List<SelectListItem>();
@@ -93,59 +87,7 @@ namespace YBOInvestigation.Controllers.VechicleData
             ViewBag.YBSCompanies = _serviceFactory.CreateYBSCompanyService().GetSelectListYBSCompanys();//GetItemsFromList(uniqueYBSCompanies, "YBSCompanyPkid", "YBSCompanyName");
             ViewBag.YBSTypes = _serviceFactory.CreateYBSTypeService().GetSelectListYBSTypesByYBSCompanyId();//GetItemsFromList(uniqueYBSTypes, "YBSTypePkid", "YBSTypeName");
         }
-        public IActionResult Create()
-        {
-            if (!SessionUtil.IsActiveSession(HttpContext))
-                return RedirectToAction("Index", "Login");
-            
-            AddViewBag();
-            return View();
-        }
-
-       
-        [ValidateAntiForgeryToken, HttpPost]
-        public IActionResult Create(VehicleData vehicleData)
-        {
-            if (!SessionUtil.IsActiveSession(HttpContext))
-                return RedirectToAction("Index", "Login");
-
-            if (_serviceFactory.CreateVehicleDataService().CreateVehicle(vehicleData))
-            {
-                Utility.AlertMessage(this, "Save Success", "alert-success");
-                try
-                {
-                    return RedirectToAction(nameof(List));
-                }
-                catch (NullReferenceException ne)
-                {
-                    Utility.AlertMessage(this, "Data Issue. Please fill VehicleData in database", "alert-danger");
-                    return View();
-                }
-                catch (SqlException se)
-                {
-                    Utility.AlertMessage(this, "Internal Server Error", "alert-danger");
-                    return View();
-                }
-            }
-            else
-            {
-                Utility.AlertMessage(this, "Save Fail.Internal Server Error", "alert-danger");
-                AddViewBag();
-                return View();
-            }
-        }
-
-        public IActionResult Edit(int Id)
-        {
-            if (!SessionUtil.IsActiveSession(HttpContext))
-                return RedirectToAction("Index", "Login");
-
-            VehicleData vehicleData = _serviceFactory.CreateVehicleDataService().FindVehicleDataById(Id);
-            AddViewBag();
-            ViewBag.YBSTypes = _serviceFactory.CreateYBSTypeService().GetSelectListYBSTypesByYBSCompanyId(vehicleData.YBSCompany.YBSCompanyPkid);
-            return View(vehicleData);
-        }
-
+        
         public IActionResult Details(int Id)
         {
             if (!SessionUtil.IsActiveSession(HttpContext))
@@ -153,49 +95,6 @@ namespace YBOInvestigation.Controllers.VechicleData
 
             VehicleData vehicleData = _serviceFactory.CreateVehicleDataService().FindVehicleDataByIdEgerLoad(Id);
             return View(vehicleData);
-        }
-
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        public IActionResult Edit(VehicleData vehicleData)
-        {
-            if (!SessionUtil.IsActiveSession(HttpContext))
-                return RedirectToAction("Index", "Login");
-
-            if (_serviceFactory.CreateVehicleDataService().EditVehicle(vehicleData))
-            {
-
-                Utility.AlertMessage(this, "Edit Success", "alert-success");
-                return RedirectToAction(nameof(List));
-            }
-            else
-            {
-                Utility.AlertMessage(this, "Edit Fail.Internal Server Error", "alert-danger");
-                AddViewBag();
-                ViewBag.YBSTypes = _serviceFactory.CreateYBSTypeService().GetSelectListYBSTypesByYBSCompanyId(vehicleData.YBSCompany.YBSCompanyPkid);
-                return View();
-            }
-        }
-
-
-        [ValidateAntiForgeryToken]
-        [HttpPost]
-        public IActionResult Delete(int Id)
-        {
-            if (!SessionUtil.IsActiveSession(HttpContext))
-                return RedirectToAction("Index", "Login");
-
-            VehicleData vehicleData = _serviceFactory.CreateVehicleDataService().FindVehicleDataById(Id);
-            if (_serviceFactory.CreateVehicleDataService().DeleteVehicle(vehicleData))
-            {
-                Utility.AlertMessage(this, "Delete Success", "alert-success");
-                return RedirectToAction(nameof(List));
-            }
-            else
-            {
-                Utility.AlertMessage(this, "Delete Fail.Internal Server Error", "alert-danger");
-                return RedirectToAction(nameof(List));
-            }
         }
 
         public JsonResult GetYBSTypeByYBSCompanyId(int ybsCompanyId)

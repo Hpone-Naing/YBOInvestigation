@@ -4,6 +4,7 @@ using YBOInvestigation.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using YBOInvestigation.Paging;
+using YBOInvestigation.Factories;
 
 namespace YBOInvestigation.Services.Impl
 {
@@ -11,7 +12,7 @@ namespace YBOInvestigation.Services.Impl
     {
         private readonly DriverService _driverService;
         private readonly VehicleDataService _vehicleDataService;
-        public YboServiceImpl(HumanResourceManagementDBContext context, DriverService driverService, VehicleDataService vehicleDataService) : base(context)
+        public YboServiceImpl(YBOInvestigationDBContext context, DriverService driverService, VehicleDataService vehicleDataService) : base(context)
         {
             _driverService = driverService;
             _vehicleDataService = vehicleDataService;
@@ -71,7 +72,11 @@ namespace YBOInvestigation.Services.Impl
             yboRecord.IsDeleted = false;
             yboRecord.CreatedDate = DateTime.Now;
             yboRecord.CreatedBy = "admin";
-            
+            if (!string.IsNullOrEmpty(yboRecord.DriverName) && int.TryParse(yboRecord.DriverName, out int oldDriverPkId))
+            {
+                string oldDriverName = _driverService.FindDriverById(oldDriverPkId).DriverName;
+                yboRecord.DriverName = oldDriverName;
+            }
             Driver existingDriver = _driverService.FindDriverByLicense(yboRecord.DriverLicense);
             if (existingDriver == null)
             {
@@ -99,24 +104,33 @@ namespace YBOInvestigation.Services.Impl
             yboRecord.IsDeleted = false;
             yboRecord.CreatedDate = DateTime.Now;
             yboRecord.CreatedBy = "admin";
-           
+            if (int.TryParse(yboRecord.DriverName, out int oldDriverPkId))
+            {
+                Console.WriteLine("here if");
+                string oldDriverName = _driverService.FindDriverById(oldDriverPkId).DriverName;
+                yboRecord.DriverName = oldDriverName;
+            }
             Driver existingDriver = _driverService.FindDriverByLicense(yboRecord.DriverLicense);
             if (existingDriver == null)
             {
+               
                 VehicleData vehicleData = _vehicleDataService.FindVehicleByVehicleNumber(yboRecord.VehicleNumber);
+              
                 Driver driver = new Driver
                 {
                     DriverName = yboRecord.DriverName,
                     DriverLicense = yboRecord.DriverLicense,
                 };
+
                 driver.VehicleData = vehicleData;
-                //_driverService.CreateDriver(driver);
+                _driverService.CreateDriver(driver);
                 yboRecord.Driver = driver;
                 return Update(yboRecord);
 
             }
             else
             {
+                Console.WriteLine("here exit driver not null...");
                 existingDriver.DriverName = yboRecord.DriverName;
                 existingDriver.DriverLicense = yboRecord.DriverLicense;
                 //existingDriver.VehicleNumber = yboRecord.VehicleNumber;

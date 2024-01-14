@@ -6,11 +6,11 @@ namespace YBOInvestigation.Factories.Impl
 {
     public class ServiceFactoryImpl : ServiceFactory
     {
-        private readonly HumanResourceManagementDBContext _context;
+        private readonly YBOInvestigationDBContext _context;
         private readonly DriverService _driverService;
         private readonly VehicleDataService _vehicleDataService;
 
-        public ServiceFactoryImpl(HumanResourceManagementDBContext context, DriverService driverService, VehicleDataService vehicleDataService)
+        public ServiceFactoryImpl(YBOInvestigationDBContext context, DriverService driverService, VehicleDataService vehicleDataService)
         {
             _context = context;
             _driverService = driverService;
@@ -21,11 +21,7 @@ namespace YBOInvestigation.Factories.Impl
         {
             return new UserServiceImpl(_context);
         }
-        public EmployeeService CreateEmployeeService()
-        {
-            return new EmployeeServiceImpl();
-        }
-
+        
         public VehicleDataService CreateVehicleDataService()
         {
             return new VehicleDataServiceImpl(_context);
@@ -54,6 +50,26 @@ namespace YBOInvestigation.Factories.Impl
         public YboRecordService CreateYBORecordService()
         {
             return new YboServiceImpl(_context, _driverService, _vehicleDataService);
+        }
+
+        public YBOInvestigationDeptService CreateYBOInvestigationDeptService()
+        {
+            return new YBOInvestigationDeptServiceImpl(_context, _driverService, _vehicleDataService);
+        }
+
+        public TrafficControlCenterInvestigationDeptService CreateTrafficControlCenterInvestigationDeptService()
+        {
+            return new TrafficControlCenterInvestigationDeptServiceImpl(_context, _driverService, _vehicleDataService);
+        }
+
+        public SpecialEventInvestigationDeptService CreateSpecialEventInvestigationDeptService()
+        {
+            return new SpecialEventInvestigationDeptServiceImpl(_context, _vehicleDataService);
+        }
+
+        public PunishmentTypeService CreatePunishmentTypeService()
+        {
+            return new PunishmentTypeServiceImpl(_context);
         }
 
     }

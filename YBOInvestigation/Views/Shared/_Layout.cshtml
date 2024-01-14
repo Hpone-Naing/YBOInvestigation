@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Human Resource Management</title>
+    <title>YRTC</title>
     <link rel="icon" href="~/Content/images/MADB Logo.png">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -87,6 +87,7 @@
                 <!-- logo for regular state and mobile devices -->
                 @*<span class="logo-lg"> M O C </span>*@
                 <img class="rounded-circle" src="~/Content/images/MADBIMG.png" width="50px;" />
+                <label class="animate-charcter">YRTC</label>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="" style="height: 50px;background-color: #3e81aa;">
@@ -106,6 +107,7 @@
                                 var initialName = loginUserInfo.UserID;
                                 var role = loginUserInfo.UserType;
                             }
+                            <span style="background-color: #47b047;border-radius: 50px;width: 10px;display: inline-block;height: 10px;"></span>
                             <img src="~/Content/images/Alphabet/@(initialName[0].ToString().ToLower()).png" alt="User Image" style="width: 20px;" class="rounded-pill">
                             <span class="hidden-xs">
                                 @initialName (@role)
@@ -264,24 +266,58 @@
                                 </li>
                             </ul>
                         </li>*@
+                        <li class="active menu-open">
+                            <a href="#" class="active">
+                                <i class="fa fa-list"></i>
+                                <span style=" font-size: 16px;">ယာဥ်စည်းကမ်းဖောက်ဖျက်မော်တော်ယာဥ်ရှာရန်</span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li>
+                                    <a class="link active" href="@Url.Action("SearchVehicle", "VehicleData")" style="font-size: 14px;"><i class=""></i><span class="fas fa-search"><label class="ms-2">မော်တော်ယာဥ်ရှာရန်</label></span></a>
+                                </li>
+                            </ul>
+                        </li>
 
                         <li class="active menu-open">
                             <a href="#" class="active">
                                 <i class="fa fa-list"></i>
-                                <span style=" font-size: 16px;">YBO ဖမ်းစီးမှုမှတ်တမ်းအချက်အလက်</span>
+                                <span style=" font-size: 16px;">ယာဥ်စည်းကမ်းဖောက်ဖျက်မှုပေးပို့မှတ်တမ်း</span>
 
                                
                             </a>
                             <ul class="treeview-menu">
                                 <li>
-                                    <a class="link active" href="@Url.Action("SearchVehicle", "YBORecord")" style="font-size: 14px;"><i class=""></i><span class="fas fa-search"><label class="ms-2">မော်တော်ယာဥ်ရှာရန်</label></span></a>
+                                    <a class="link active" href="@Url.Action("List", "YBORecord")" style="font-size: 14px;"><i class=""></i><span class="fa-solid fa-book"><label class="ms-2">စည်းကမ်းထိန်းသိမ်း‌ရေးနှင့်စစ်ဆေးရေးငှာနမှတ်တမ်း</label></span></a>
                                 </li>
                                 <li>
-                                    <a class="link active" href="@Url.Action("List", "YBORecord")" style="font-size: 14px;"><i class=""></i><span class="fa-solid fa-book"><label class="ms-2">အချက်အလက်များ</label></span></a>
+                                    <a class="link active" href="@Url.Action("List", "YBORecord")" style="font-size: 14px;"><i class=""></i><span class="fa-solid fa-book"><label class="ms-2">Call Center တိုင်ကြားမှုမှတ်တမ်း</label></span></a>
+                                </li>
+                                <li>
+                                    <a class="link active" href="@Url.Action("List", "YBOInvestigationDept")" style="font-size: 14px;"><i class=""></i><span class="fa-solid fa-book"><label class="ms-2">YBOပေးပို့မှုမှတ်တမ်း</label></span></a>
+                                </li>
+                                <li>
+                                    <a class="link active" href="@Url.Action("List", "TrafficControlCenterInvestigationDept")" style="font-size: 14px;"><i class=""></i><span class="fa-solid fa-book"><label class="ms-2">Traffic Control Centerပေးပို့မှုမှတ်တမ်း</label></span></a>
+                                </li>
+                                <li>
+                                    <a class="link active" href="@Url.Action("List", "SpecialEventInvestigationDept")" style="font-size: 14px;"><i class=""></i><span class="fa-solid fa-book"><label class="ms-2">ယာဥ်မတော်တဆနှင့်ထူးခြားဖြစ်စဥ်မှတ်တမ်း</label></span></a>
                                 </li>
                             </ul>
                         </li>
                         
+                        <li class="active menu-open">
+                            <a href="@Url.Action("List", "PunishmentType")" class="active">
+                                <i class="fa fa-list"></i>
+                                <span style=" font-size: 16px;">Punishment Type Settings</span>
+                            </a>
+                        </li>
+
+                        <li class="active menu-open">
+                            <a href="#" class="active">
+                                <i class="fa fa-list"></i>
+                                <span style=" font-size: 16px;">စည်းကမ်းဖောက်ဖျက်သည့်ယာဥ်မောင်းများအားအသိပညာပေးပို့မှုသင်တန်း</span>
+                            </a>
+                        </li>
+
         }
 
         @*<li><a href="@Url.Action("ProposalApproveList", "ProposalProgress")"><i class="fa fa-inbox"></i> <span>ဝင်စာများ&nbsp;&nbsp;<span style="background-color:red;" class="badge badge-danger">@Context.Session.GetString("countDocIn")</span></span></a></li>
@@ -397,7 +433,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/js/bootstrap.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="~/js/vehicleData.js" asp-append-version="true"></script>
     <script src="~/js/yboRecord.js" asp-append-version="true"></script>
-    <script src="~/js/manufacturer.js" asp-append-version="true"></script>
+    <script src="~/js/driver.js" asp-append-version="true"></script>
     <script src="~/js/spinner.js" asp-append-version="true"></script>
 
 

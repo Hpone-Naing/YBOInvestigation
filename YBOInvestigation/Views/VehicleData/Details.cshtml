@@ -17,7 +17,16 @@
 </div>
 
 <div class="d-flex justify-content-end align-item-end">
-    <a class="btn btn-danger rounded-pill" asp-controller="YBORecord" asp-action="Create" asp-route-vehicleId="@Model.VehicleDataPkid">တိုင်ကြားမည်</a>
+    <div class="dropdown">
+        <button type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" class="btn btn-danger dropdown-toggle rounded-pill">တိုင်ကြားမည်</button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(-55px, 39px);" data-popper-placement="bottom-end">
+            <li><a class="dropdown-item" asp-controller="YBORecord" asp-action="Create" asp-route-vehicleId="@Model.VehicleDataPkid">စည်းကမ်းထိန်းသိမ်းရေးနှင့်စစ်ဆေးရေးငှာန</a></li>
+            <li><a class="dropdown-item" asp-controller="YBOInvestigationDept" asp-action="Create" asp-route-vehicleId="@Model.VehicleDataPkid">စည်းကမ်းထိန်းသိမ်းရေးနှင့်စစ်ဆေးရေးငှာန(YBO)</a></li>
+            <li><a class="dropdown-item" asp-controller="TrafficControlCenterInvestigationDept" asp-action="Create" asp-route-vehicleId="@Model.VehicleDataPkid">စည်းကမ်းထိန်းသိမ်းရေးနှင့်စစ်ဆေးရေးငှာန(Traffic Control Center)</a></li>
+            <li><a class="dropdown-item" asp-controller="SpecialEventInvestigationDept" asp-action="Create" asp-route-vehicleId="@Model.VehicleDataPkid">စည်းကမ်းထိန်းသိမ်းရေးနှင့်စစ်ဆေးရေးငှာန(ထူးခြားဖြစ်စဥ်)</a></li>
+
+        </ul>
+    </div>
 </div>
 
 <div style="background-color: #e1e135ed;" class="row mt-2 border border-dark">

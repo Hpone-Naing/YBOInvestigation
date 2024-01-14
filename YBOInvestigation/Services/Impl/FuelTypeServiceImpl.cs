@@ -5,7 +5,7 @@ namespace YBOInvestigation.Services.Impl
 {
     public class FuelTypeServiceImpl : AbstractServiceImpl<FuelType>, FuelTypeService
     {
-        public FuelTypeServiceImpl(HumanResourceManagementDBContext context) : base(context)
+        public FuelTypeServiceImpl(YBOInvestigationDBContext context) : base(context)
         {
         }
 

@@ -3,24 +3,25 @@ using YBOInvestigation.Models;
 
 namespace YBOInvestigation.Data
 {
-    public class HumanResourceManagementDBContext : DbContext
+    public class YBOInvestigationDBContext : DbContext
     {
-        public HumanResourceManagementDBContext(DbContextOptions<HumanResourceManagementDBContext> options) : base(options)
+        public YBOInvestigationDBContext(DbContextOptions<YBOInvestigationDBContext> options) : base(options)
         {
 
         }
 
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<FuelType> FuelTypes { get; set; }
         public virtual DbSet<Manufacturer> Manufacturers { get; set; }
-        public virtual DbSet<Position> Positions { get; set; }
-        public virtual DbSet<Staff> Staffs { get; set; }
         public virtual DbSet<VehicleData> VehicleDatas { get; set; }
         public virtual DbSet<YBSCompany> YBSCompanies { get; set; }
         public virtual DbSet<YBSType> YBSTypes { get; set; }
         public virtual DbSet<YboRecord> YboRecords { get; set; }
+        public virtual DbSet<YBOInvestigationDept> YBOInvestigationDepts { get; set; }
+        public virtual DbSet<TrafficControlCenterInvestigationDept> TrafficControlCenterInvestigationDepts { get; set; }
+        public virtual DbSet<SpecialEventInvestigationDept> SpecialEventInvestigationDepts { get; set; }
         public virtual DbSet<Driver> Drivers { get; set; }
+        public virtual DbSet<PunishmentType> PunishmentTypes { get; set; }
 
 
     }

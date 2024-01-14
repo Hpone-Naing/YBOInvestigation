@@ -5,13 +5,18 @@ namespace YBOInvestigation.Services.Impl
 {
     public class DriverServiceImpl : AbstractServiceImpl<Driver>, DriverService
     {
-        public DriverServiceImpl(HumanResourceManagementDBContext context) : base(context)
+        public DriverServiceImpl(YBOInvestigationDBContext context) : base(context)
         {
         }
 
         public Driver FindDriverByLicense(string licenseNumber)
         {
             return FindByString("DriverLicense", licenseNumber);
+        }
+
+        public Driver FindDriverById(int driverPkId)
+        {
+            return FindById(driverPkId);
         }
 
         public string FindDriverLicenseByDriverName(string driverName)

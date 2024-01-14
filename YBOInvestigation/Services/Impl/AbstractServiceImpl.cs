@@ -8,9 +8,9 @@ namespace YBOInvestigation.Services.Impl
 {
     public class AbstractServiceImpl<T> : AbstractService<T> where T : class
     {
-        protected readonly HumanResourceManagementDBContext _context;
+        protected readonly YBOInvestigationDBContext _context;
 
-        public AbstractServiceImpl(HumanResourceManagementDBContext context)
+        public AbstractServiceImpl(YBOInvestigationDBContext context)
         {
             _context = context;
         }
