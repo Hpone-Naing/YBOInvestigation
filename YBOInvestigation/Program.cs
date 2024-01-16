@@ -24,6 +24,7 @@ builder.Services.AddDbContext<YBOInvestigationDBContext>(options =>
 //Inject Service classes 
 builder.Services.AddTransient<ServiceFactory, ServiceFactoryImpl>();
 builder.Services.AddTransient<DriverService, DriverServiceImpl>();
+builder.Services.AddTransient<TrainedYBSDriverInfoService, TrainedYBSDriverInfoServiceImpl>();
 builder.Services.AddTransient<VehicleDataService, VehicleDataServiceImpl>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>

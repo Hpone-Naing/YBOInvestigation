@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using YBOInvestigation.Paging;
 using YBOInvestigation.Classes;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace YBOInvestigation.Services.Impl
 {
@@ -113,6 +114,45 @@ namespace YBOInvestigation.Services.Impl
         {
             return _context.Set<T>().Where(entity =>
             EF.Property<int>(entity, columnName) == intVal).ToList();
+        }
+
+        public T GetObjByIntVal(string columnName, int intVal)
+        {
+            return _context.Set<T>().FirstOrDefault(entity =>
+            EF.Property<int>(entity, columnName) == intVal);
+        }
+
+        public List<SelectListItem> GetItemsFromList<T>(List<T> list, string valuePropertyName, string textPropertyName)
+        {
+            var lstItems = new List<SelectListItem>();
+
+            foreach (T item in list)
+            {
+                var itemType = item.GetType();
+                var valueProperty = itemType.GetProperty(valuePropertyName);
+                var textProperty = itemType.GetProperty(textPropertyName);
+
+                if (valueProperty != null && textProperty != null)
+                {
+                    var value = valueProperty.GetValue(item)?.ToString();
+                    var text = textProperty.GetValue(item)?.ToString();
+
+                    lstItems.Add(new SelectListItem
+                    {
+                        Value = value,
+                        Text = text
+                    });
+                }
+            }
+
+            var defItem = new SelectListItem()
+            {
+                Value = "",
+                Text = "ရွေးချယ်ရန်"
+            };
+
+            lstItems.Insert(0, defItem);
+            return lstItems;
         }
 
         public bool Create(T t)

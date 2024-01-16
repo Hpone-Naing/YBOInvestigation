@@ -1,4 +1,5 @@
-﻿using YBOInvestigation.Paging;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using YBOInvestigation.Paging;
 
 namespace YBOInvestigation.Services
 {
@@ -10,6 +11,8 @@ namespace YBOInvestigation.Services
         public T FindById(int id);
         public T FindByString(string columnName, string str);
         public List<T> GetListByIntVal(string columnName, int intVal);
+        public T GetObjByIntVal(string columnName, int intVal);
+        public List<SelectListItem> GetItemsFromList<T>(List<T> list, string valuePropertyName, string textPropertyName);
         public bool Create(T entity);
         public bool Update(T t);
 

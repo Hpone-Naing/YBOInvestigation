@@ -13,9 +13,13 @@ namespace YBOInvestigation.Factories
 
         YboRecordService CreateYBORecordService();
         YBOInvestigationDeptService CreateYBOInvestigationDeptService();
+        CallCenterInvestigationDeptService CreateCallCenterInvestigationDeptService();
+
         TrafficControlCenterInvestigationDeptService CreateTrafficControlCenterInvestigationDeptService();
         SpecialEventInvestigationDeptService CreateSpecialEventInvestigationDeptService();
         DriverService CreateDriverService();
         PunishmentTypeService CreatePunishmentTypeService();
+        YBSDriverCourseDeliveryService CreateYBSDriverCourseDeliveryService();
+        TrainedYBSDriverInfoService CreateTrainedYBSDriverInfoService();
     }
 }

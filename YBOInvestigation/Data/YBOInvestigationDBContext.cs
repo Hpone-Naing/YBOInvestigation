@@ -20,9 +20,11 @@ namespace YBOInvestigation.Data
         public virtual DbSet<YBOInvestigationDept> YBOInvestigationDepts { get; set; }
         public virtual DbSet<TrafficControlCenterInvestigationDept> TrafficControlCenterInvestigationDepts { get; set; }
         public virtual DbSet<SpecialEventInvestigationDept> SpecialEventInvestigationDepts { get; set; }
+        public virtual DbSet<CallCenterInvestigationDept> CallCenterInvestigationDepts { get; set; }
         public virtual DbSet<Driver> Drivers { get; set; }
         public virtual DbSet<PunishmentType> PunishmentTypes { get; set; }
-
+        public virtual DbSet<TrainedYBSDriverInfo> TrainedYBSDriverInfos { get; set; }
+        public virtual DbSet<YBSDriverCourseDelivery> YBSDriverCourseDeliveries { get; set; }
 
     }
 }

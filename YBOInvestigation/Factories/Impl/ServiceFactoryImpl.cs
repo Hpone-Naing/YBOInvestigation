@@ -8,12 +8,14 @@ namespace YBOInvestigation.Factories.Impl
     {
         private readonly YBOInvestigationDBContext _context;
         private readonly DriverService _driverService;
+        private readonly TrainedYBSDriverInfoService _trainedYBSDriverInfoService;
         private readonly VehicleDataService _vehicleDataService;
 
-        public ServiceFactoryImpl(YBOInvestigationDBContext context, DriverService driverService, VehicleDataService vehicleDataService)
+        public ServiceFactoryImpl(YBOInvestigationDBContext context, DriverService driverService, TrainedYBSDriverInfoService trainedYBSDriverInfoService, VehicleDataService vehicleDataService)
         {
             _context = context;
             _driverService = driverService;
+            _trainedYBSDriverInfoService = trainedYBSDriverInfoService;
             _vehicleDataService = vehicleDataService;
         }
 
@@ -57,6 +59,11 @@ namespace YBOInvestigation.Factories.Impl
             return new YBOInvestigationDeptServiceImpl(_context, _driverService, _vehicleDataService);
         }
 
+        public CallCenterInvestigationDeptService CreateCallCenterInvestigationDeptService()
+        {
+            return new CallCenterInvestigationDeptServiceImpl(_context, _driverService, _vehicleDataService);
+        }
+
         public TrafficControlCenterInvestigationDeptService CreateTrafficControlCenterInvestigationDeptService()
         {
             return new TrafficControlCenterInvestigationDeptServiceImpl(_context, _driverService, _vehicleDataService);
@@ -67,9 +74,21 @@ namespace YBOInvestigation.Factories.Impl
             return new SpecialEventInvestigationDeptServiceImpl(_context, _vehicleDataService);
         }
 
+        
+
         public PunishmentTypeService CreatePunishmentTypeService()
         {
             return new PunishmentTypeServiceImpl(_context);
+        }
+
+        public YBSDriverCourseDeliveryService CreateYBSDriverCourseDeliveryService()
+        {
+            return new YBSDriverCourseDeliveryServiceImpl(_context, _driverService, _trainedYBSDriverInfoService, _vehicleDataService);
+        }
+
+        public TrainedYBSDriverInfoService CreateTrainedYBSDriverInfoService()
+        {
+            return new TrainedYBSDriverInfoServiceImpl(_context);
         }
 
     }
